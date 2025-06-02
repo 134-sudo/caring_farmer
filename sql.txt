@@ -1,0 +1,50 @@
+CREATE TABLE товары (
+    ин SERIAL PRIMARY KEY,
+    категория VARCHAR(100),
+    наименование_товара VARCHAR(100),
+    производитель VARCHAR(100),
+    цена INTEGER,
+    упаковка VARCHAR(100),
+    размер VARCHAR(100),
+    ед_измерения VARCHAR(100),
+    дата_изготовления DATE,
+    дата_истечения_срока_годности DATE,
+    количество_в_наличии INTEGER
+);
+CREATE TABLE список_продажи (
+    ин SERIAL PRIMARY KEY,
+    номер_списка INTEGER,
+    ин_товара INTEGER REFERENCES товары(ин),
+    количество INTEGER
+);
+CREATE TABLE сотрудники (
+    ин SERIAL PRIMARY KEY,
+    фио VARCHAR(200),
+    дата_рождения DATE,
+    телефон VARCHAR(100),
+    логин VARCHAR(100),
+    пароль VARCHAR(100)
+);
+CREATE TABLE продажи (
+    ин SERIAL PRIMARY KEY,
+    дата_продажи DATE,
+    ин_списка_проданных_товаров INTEGER REFERENCES список_продажи(ин), 
+    ин_сотрудника INTEGER REFERENCES сотрудники(ин),  
+    количество INTEGER,
+    сумма NUMERIC
+);
+CREATE TABLE список_поставки (
+    ин SERIAL PRIMARY KEY,
+    номер_списка INTEGER,
+    ин_товара INTEGER REFERENCES товары(ин), 
+    категория VARCHAR(100),
+    наименование_товара VARCHAR(100),
+    упаковка VARCHAR(100),
+    количество INTEGER
+);
+CREATE TABLE поставки (
+    ин SERIAL PRIMARY KEY,
+    дата_поставки TIMESTAMP,
+    ин_списка_проданных_товаров INTEGER REFERENCES список_поставки(ин), 
+    поставщик VARCHAR(100)
+);
